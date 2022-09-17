@@ -47,8 +47,8 @@ namespace TownOfHost
         public static Dictionary<CustomRoles, CustomOption> CustomRoleSpawnChances;
         public static readonly string[] rates =
         {
-            "Rate0", "Rate10", "Rate20", "Rate30", "Rate40", "Rate50",
-            "Rate60", "Rate70", "Rate80", "Rate90", "Rate100",
+            "Rate0",  "Rate5",  "Rate10", "Rate20", "Rate30", "Rate40",
+            "Rate50", "Rate60", "Rate70", "Rate80", "Rate90", "Rate100",
         };
         public static readonly string[] ratesZeroOne =
         {
@@ -71,6 +71,8 @@ namespace TownOfHost
         public static CustomOption MadmateCanFixLightsOut; // TODO:mii-47 マッド役職統一
         public static CustomOption MadmateCanFixComms;
         public static CustomOption MadmateHasImpostorVision;
+        public static CustomOption MadmateCanSeeKillFlash;
+        public static CustomOption MadmateCanSeeOtherVotes;
         public static CustomOption MadmateVentCooldown;
         public static CustomOption MadmateVentMaxTime;
 
@@ -152,6 +154,11 @@ namespace TownOfHost
         public static CustomOption AllAliveMeeting;
         public static CustomOption AllAliveMeetingTime;
 
+        // 追加の緊急ボタンクールダウン
+        public static CustomOption AdditionalEmergencyCooldown;
+        public static CustomOption AdditionalEmergencyCooldownThreshold;
+        public static CustomOption AdditionalEmergencyCooldownTime;
+
         //転落死
         public static CustomOption LadderDeath;
         public static CustomOption LadderDeathChance;
@@ -177,18 +184,22 @@ namespace TownOfHost
         public static CustomOption AutoDisplayLastResult;
         public static CustomOption SuffixMode;
         public static CustomOption ColorNameMode;
+        public static CustomOption FixFirstKillCooldown;
         public static CustomOption GhostCanSeeOtherRoles;
         public static CustomOption GhostCanSeeOtherVotes;
         public static CustomOption GhostIgnoreTasks;
+        public static CustomOption DisableTaskWin;
         public static CustomOption HideGameSettings;
-        public static CustomOption AirshipRandomSpawn;
+        public static CustomOption RandomSpawn;
         public static CustomOption AirshipAdditionalSpawn;
         public static readonly string[] suffixModes =
         {
             "SuffixMode.None",
             "SuffixMode.Version",
             "SuffixMode.Streaming",
-            "SuffixMode.Recording"
+            "SuffixMode.Recording",
+            "SuffixMode.RoomHost",
+            "SuffixMode.OriginalName"
         };
         public static SuffixModes GetSuffixMode()
         {
@@ -237,8 +248,8 @@ namespace TownOfHost
 
         public static int GetRoleCount(CustomRoles role)
         {
-            var chance = CustomRoleSpawnChances.TryGetValue(role, out var sc) ? sc.GetSelection() : 0;
-            return chance == 0 ? 0 : CustomRoleCounts.TryGetValue(role, out var option) ? (int)option.GetFloat() : roleCounts[role];
+            var chance = CustomRoleSpawnChances.TryGetValue(role, out var sc) ? sc.GetChance() : 0;
+            return chance == 0 ? 0 : CustomRoleCounts.TryGetValue(role, out var option) ? option.GetInt() : roleCounts[role];
         }
 
         public static float GetRoleChance(CustomRoles role)
@@ -299,6 +310,8 @@ namespace TownOfHost
             MadmateCanFixLightsOut = CustomOption.Create(15010, TabGroup.ImpostorRoles, Color.white, "MadmateCanFixLightsOut", false, null, true, false);
             MadmateCanFixComms = CustomOption.Create(15011, TabGroup.ImpostorRoles, Color.white, "MadmateCanFixComms", false);
             MadmateHasImpostorVision = CustomOption.Create(15012, TabGroup.ImpostorRoles, Color.white, "MadmateHasImpostorVision", false);
+            MadmateCanSeeKillFlash = CustomOption.Create(15015, TabGroup.ImpostorRoles, Color.white, "MadmateCanSeeKillFlash", false);
+            MadmateCanSeeOtherVotes = CustomOption.Create(15016, TabGroup.ImpostorRoles, Color.white, "MadmateCanSeeOtherVotes", false);
             MadmateVentCooldown = CustomOption.Create(15213, TabGroup.ImpostorRoles, Color.white, "MadmateVentCooldown", 0f, 0f, 180f, 5f);
             MadmateVentMaxTime = CustomOption.Create(15214, TabGroup.ImpostorRoles, Color.white, "MadmateVentMaxTime", 0f, 0f, 180f, 5f);
             // Both
@@ -431,9 +444,9 @@ namespace TownOfHost
             // MapDleks = CustomOption.Create(100405, TabGroup.MainSettings, Color.white, "AddedDleks", false, RandomMapMode)
             //     .SetGameMode(CustomGameMode.All);
 
-            AirshipRandomSpawn = CustomOption.Create(101300, TabGroup.MainSettings, Color.white, "AirshipRandomSpawn", false, isHeader: true)
+            RandomSpawn = CustomOption.Create(101300, TabGroup.MainSettings, Color.white, "RandomSpawn", false, isHeader: true)
                 .SetGameMode(CustomGameMode.All);
-            AirshipAdditionalSpawn = CustomOption.Create(101301, TabGroup.MainSettings, Color.white, "AirshipAdditionalSpawn", false, AirshipRandomSpawn)
+            AirshipAdditionalSpawn = CustomOption.Create(101301, TabGroup.MainSettings, Color.white, "AirshipAdditionalSpawn", false, RandomSpawn)
                 .SetGameMode(CustomGameMode.All);
 
             // 投票モード
@@ -449,6 +462,11 @@ namespace TownOfHost
             // 全員生存時の会議時間
             AllAliveMeeting = CustomOption.Create(100900, TabGroup.MainSettings, Color.white, "AllAliveMeeting", false, null, true);
             AllAliveMeetingTime = CustomOption.Create(100901, TabGroup.MainSettings, Color.white, "AllAliveMeetingTime", 10, 1, 300, 1, AllAliveMeeting);
+
+            // 生存人数ごとの緊急会議
+            AdditionalEmergencyCooldown = CustomOption.Create(101400, TabGroup.MainSettings, Color.white, "AdditionalEmergencyCooldown", false, null, true);
+            AdditionalEmergencyCooldownThreshold = CustomOption.Create(101401, TabGroup.MainSettings, Color.white, "AdditionalEmergencyCooldownThreshold", 1, 1, 15, 1, AdditionalEmergencyCooldown);
+            AdditionalEmergencyCooldownTime = CustomOption.Create(101402, TabGroup.MainSettings, Color.white, "AdditionalEmergencyCooldownTime", 1, 1, 60, 1, AdditionalEmergencyCooldown);
 
             // 転落死
             LadderDeath = CustomOption.Create(101100, TabGroup.MainSettings, Color.white, "LadderDeath", false, null, true);
@@ -469,11 +487,15 @@ namespace TownOfHost
                 .SetGameMode(CustomGameMode.All);
             ColorNameMode = CustomOption.Create(100605, TabGroup.MainSettings, Color.white, "ColorNameMode", false)
                 .SetGameMode(CustomGameMode.All);
+            FixFirstKillCooldown = CustomOption.Create(100608, TabGroup.MainSettings, Color.white, "FixFirstKillCooldown", false)
+                .SetGameMode(CustomGameMode.All);
             GhostCanSeeOtherRoles = CustomOption.Create(100603, TabGroup.MainSettings, Color.white, "GhostCanSeeOtherRoles", true)
                 .SetGameMode(CustomGameMode.All);
             GhostCanSeeOtherVotes = CustomOption.Create(100604, TabGroup.MainSettings, Color.white, "GhostCanSeeOtherVotes", true)
                 .SetGameMode(CustomGameMode.All);
             GhostIgnoreTasks = CustomOption.Create(100607, TabGroup.MainSettings, Color.white, "GhostIgnoreTasks", false)
+                .SetGameMode(CustomGameMode.All);
+            DisableTaskWin = CustomOption.Create(100609, TabGroup.MainSettings, Color.white, "DisableTaskWin", false)
                 .SetGameMode(CustomGameMode.All);
             HideGameSettings = CustomOption.Create(100606, TabGroup.MainSettings, Color.white, "HideGameSettings", false)
                 .SetGameMode(CustomGameMode.All);

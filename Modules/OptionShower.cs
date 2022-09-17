@@ -48,7 +48,7 @@ namespace TownOfHost
                     if (Options.EnableLastImpostor.GetBool())
                     {
                         text += $"<color={Utils.GetRoleColorCode(CustomRoles.LastImpostor)}>{Utils.GetRoleName(CustomRoles.LastImpostor)}:</color> {Options.EnableLastImpostor.GetString()}\n";
-                        text += $"\t{GetString("LastImpostorKillCooldown")}: {Options.LastImpostorKillCooldown.GetString()}\n\n";
+                        text += $"\t{GetString("KillCooldown")}: {Options.LastImpostorKillCooldown.GetString()}\n\n";
                     }
                 }
                 nameAndValue(Options.EnableGM);
@@ -85,7 +85,8 @@ namespace TownOfHost
                         text += $"\t{Options.CanMakeMadmateCount.GetName()}: {Options.CanMakeMadmateCount.GetString()}\n";
                     }
                     if ((kvp.Key == CustomRoles.EvilTracker && EvilTracker.CanSeeKillFlash.GetBool())
-                    || kvp.Key == CustomRoles.Seer)
+                    || kvp.Key == CustomRoles.Seer
+                    || kvp.Key.IsMadmate() && Options.MadmateCanSeeKillFlash.GetBool())
                     {
                         text += $"\t{Options.KillFlashDuration.GetName()}: {Options.KillFlashDuration.GetString()}\n";
                     }
@@ -131,7 +132,7 @@ namespace TownOfHost
                 nameAndValue(Options.NoGameEnd);
                 nameAndValue(Options.GhostCanSeeOtherRoles);
                 nameAndValue(Options.HideGameSettings);
-                listUp(Options.AirshipRandomSpawn);
+                listUp(Options.RandomSpawn);
             }
             //1ページにつき35行までにする処理
             List<string> tmp = new(text.Split("\n\n"));

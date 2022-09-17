@@ -252,6 +252,8 @@ namespace TownOfHost
                 ExceptionMessage = ex.Message;
                 ExceptionMessageIsShown = false;
             }
+            TownOfHost.Logger.Info($"{Application.version}", "AmongUs Version");
+
             TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Branch)}: {ThisAssembly.Git.Branch}", "GitVersion");
             TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.BaseTag)}: {ThisAssembly.Git.BaseTag}", "GitVersion");
             TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Commit)}: {ThisAssembly.Git.Commit}", "GitVersion");
@@ -394,7 +396,9 @@ namespace TownOfHost
         None = 0,
         TOH,
         Streaming,
-        Recording
+        Recording,
+        RoomHost,
+        OriginalName
     }
     public enum VersionTypes
     {

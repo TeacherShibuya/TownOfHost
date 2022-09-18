@@ -317,7 +317,7 @@ MadmateVentMaxTime,Madmates Max Time In Vents(s),Время Использова
 EvilWatcherChance,EvilWatcher Chance,EvilWatcher Шанс,イビルウォッチャーになる確率,窥视者成为内鬼阵营的概率,成為邪惡觀察者的機率
 EvilGuesserChance,Evil Guesser Chance,,イビルゲッサーになる確率,成为邪恶猜测者的概率,成為邪惡猜測者的概率
 ConfirmedEvilGuesser,Number of Evil Guesser,,確定イビルゲッサーの人数,邪恶猜测者的数量,邪惡猜測者的數量
-CanShootAsNormalCrewmate,Arrow to shoot as Normal Crewmate,クルー打ちを許可,作为正常船员射击的箭头,作為正常船員射擊的箭頭
+CanShootAsNormalCrewmate,Arrow to shoot as Normal Crewmate,,クルー打ちを許可,作为正常船员射击的箭头,作為正常船員射擊的箭頭
 GuesserShootLimit,Guesser shoot limit,,ゲッサーが打てる回数,猜测者射击限制,猜測者射擊限制
 CanKillMultipleTimes,Can kill multiple times during meeting,,１会議中に複数回殺せる,可以在一次会议中被杀死多次,可以在一次會議中被殺死多次
 LighterTaskCompletedVision,Expanded Vision,Дальность Обзора,タスク完了時の視界,完成任务后的视野,做完任務的視野
